@@ -1,6 +1,6 @@
 module CRZ
   module Functor(A)
-    abstract def map(&block : A -> B) : Functor(B) forall B
+    abstract def map(&block : A -> B) : Functor forall B
 
     def replace(other : Functor(B), v : A) : Functor(A)
       map { |_| v }
@@ -10,9 +10,9 @@ module CRZ
   module Applicative(A)
     include Functor(A)
 
-    abstract def ap(func : Applicative(A -> B)) : Applicative(B) forall B
+    abstract def ap(func : Applicative(A -> B)) : Applicative forall B
 
-    def *(func : Applicative(A -> B)) : Applicative(B) forall B
+    def *(func : Applicative(A -> B)) : Applicative forall B
       ap(func)
     end
 
@@ -24,31 +24,31 @@ module CRZ
   module Monad(A)
     include Applicative(A)
 
-    abstract def bind(&block : A -> Monad(B)) : Monad(B) forall B
+    abstract def bind(&block : A -> Monad(B)) : Monad forall B
 
-    def ap(func : Applicative(A -> B)) : Applicative(B) forall B
+    def ap(func : Applicative(A -> B)) : Applicative forall B
       func.bind do |f|
         self.map &f
       end
     end
 
-    def map(&block : A -> B) : Monad(B) forall B
+    def map(&block : A -> B) : Monad forall B
       bind do |x|
         typeof(self).of(block.call x)
       end
     end
 
-    def >=(block : A -> Monad(B)) : Monad(B) forall B
+    def >=(block : A -> Monad(B)) : Monad forall B
       bind do |x|
         block.call(x)
       end
     end
 
-    def >>(other : Monad(B)) : Monad(B) forall B
+    def >>(other : Monad(B)) : Monad forall B
       bind { |_| other }
     end
 
-    def <<(other : Monad(B)) : Monad(A) forall B
+    def <<(other : Monad(B)) : Monad forall B
       bind { |v|
         other.map {|_|
           v

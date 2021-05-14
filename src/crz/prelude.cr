@@ -3,7 +3,7 @@ module CRZ::Prelude
     a
   end
 
-  def map(f : (A -> B), a : Functor(A)) : Functor(B) forall A, B
+  def map(f : (A -> B), a : Functor(A)) : Functor forall A, B
     a.map &f
   end
 end

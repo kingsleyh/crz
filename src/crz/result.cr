@@ -10,14 +10,14 @@ module CRZ::Containers
         Result::Ok(T, E).new value
       end
 
-      def bind(&block : T -> Result(U, E)) : Result(U, E) forall U
+      def bind(&block : T -> Result(U, E)) : Result forall U
         Result.match self, {
           [Ok, x]  => (block.call x),
           [Err, e] => Result::Err(U, E).new e,
         }
       end
 
-      def map(&block : T -> U) : Result(U, E) forall U
+      def map(&block : T -> U) : Result forall U
         Result.match self, {
           [Ok, x] => (Result::Ok(U, E).new (block.call x)),
           [Err, e] => Result::Err(U, E).new e

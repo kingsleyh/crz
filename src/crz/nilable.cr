@@ -13,7 +13,7 @@ module CRZ::Containers
       Nilable.new value
     end
 
-    def bind(&block : A -> Nilable(B)) : Nilable(B) forall B
+    def bind(&block : A -> Nilable(B)) : Nilable forall B
       if @value.nil?
         Nilable(B).new
       else

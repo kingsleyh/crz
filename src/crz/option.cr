@@ -15,7 +15,7 @@ module CRZ::Containers
         }
       end
 
-      def self.of(value : T) : Option(T) forall T
+      def self.of(value : T) : Option forall T
         Option::Some.new(value)
       end
 
@@ -48,11 +48,11 @@ module CRZ::Containers
         }
       end
 
-      def flat_map(&block : A -> Option(B)) : Option(B) forall B
+      def flat_map(&block : A -> Option(B)) : Option forall B
         bind(block)
       end
 
-      def bind(&block : A -> Option(B)) : Option(B) forall B
+      def bind(&block : A -> Option(B)) : Option forall B
         Option.match self, {
           [Some, x] => (block.call x),
           [None]    => Option::None(B).new,
